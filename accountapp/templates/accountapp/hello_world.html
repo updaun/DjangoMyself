@@ -4,6 +4,12 @@
 
     <div style="margin: 2rem; text-align: center;">
         <h1>Hello Django project</h1>
+
+        <form action="/accounts/hello_world/" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-outline-secondary rounded-pill px-5">
+        </form>
+
         <h3>{{ text }}</h3>
     </div>
 {% endblock %}
