@@ -1,7 +1,42 @@
 version: "3.7"
 
 services:
+
+  nginx:
+    image: nginx:1.19.5
+    ports:
+      - 80:80
+    networks:
+      - DjangoMyself_network
+    volumes:
+      - /home/ekdns9665/nginx.conf:/etc/nginx/nginx.conf
+      - djangomyself_static:/data/static/
+      - djangomyself_media:/data/media/
+
   django:
     image: djangomyself:v1.3.1
-    ports:
-    - 8080:8000
+    networks:
+      - DjangoMyself_network
+    volumes:
+      - djangomyself_static:/home/DjangoMyself/staticfiles/
+      - djangomyself_media:/home/DjangoMyself/media/
+
+  mariadb:
+    image: mariadb:10.5
+    networks:
+      - DjangoMyself_network
+    volumes:
+      - djangomyself_mariadb:/var/lib/mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: password1234
+      MARIADB_DATABASE: django
+      MARIADB_USER: django
+      MARIADB_PASSWORD: password1234
+
+networks:
+  DjangoMyself_network:
+
+volumes:
+  djangomyself_static:
+  djangomyself_media:
+  djangomyself_mariadb:
